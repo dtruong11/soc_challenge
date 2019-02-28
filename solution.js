@@ -13,7 +13,7 @@ start at city A, then travel directly to city B (a distance of 5), then directly
 4. The distance of the route A-E-B-C-D.
 5. The distance of the route A-E-D.
 6. The number of trips starting at C and ending at C with a maximum of 3 stops. In the sample
-data below, there are two such trips: C-D-C (2 stops). and C-E-B-C (3 stops).
+data below, there are two such trips: C-D-C (2 stops). and C-E-B-C (3 stops). bfs. Before distance 4, if reaches end node, return the route 
 7. The number of trips starting at A and ending at C with exactly 4 stops. In the sample data
 below, there are three such trips: A to C (via B,C,D); A to C (via D,C,D); and A to C (via D,E,B).
 8. The length of the shortest route (in terms of distance to travel) from A to C.
@@ -49,7 +49,7 @@ let graphString = `AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7`
 // Test input 1 -> 5 
 const buildGraph = (graphStr) => {
   let vertices = {}
-  let edgesArr = graphStr.split(' ')
+  let edgesArr = graphStr.split(', ')
   let graph = {}
   let edges = {}
 
@@ -60,7 +60,7 @@ const buildGraph = (graphStr) => {
 
     // create edges object 
     if (!edges[parent]) {
-      edges[parent] = []
+      edges[parent] = [] // {}
       edges[parent].push({ [child]: distance })
     } else {
       edges[parent].push({ [child]: distance })
@@ -87,12 +87,15 @@ const routeDistance = (route, graph) => {
 }
 
 const helper = (route, edges, distance = 0) => {
-  if (route.length === 0) {
+  if (route.length === 1) {
     // console.log('route', route, 'distance', distance)
     return distance
   }
   let start = route.shift()
   let end = route[0]
+  // if (start in edges && end in edges[start])
+  //    return helper(route, edges, distance + edges[start][end])
+  // return 'NO SUCH ROUTE'
   let neighbors = edges[start]
   let adjVertices = neighbors.map(el => Object.keys(el)[0])
 
